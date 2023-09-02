@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+tasks:
+  test:
+    cmds:
+      - go test -v ./...
+  run:
+    cmds:
+      - task: run:go
+  run:go:
+    cmds:
+      - go run -v ./... {{.CLI_ARGS}}
+  run:podman:
+    cmds:
+      - >-
+        podman build --target release \
+          --file Dockerfile \
+          --tag localhost/digger-config-generator:latest
+      - >-
+        podman run --rm \
+          --volume ./:/data \
+          localhost/digger-config-generator:latest {{.CLI_ARGS}}

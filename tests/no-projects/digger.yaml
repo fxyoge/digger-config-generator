@@ -1,0 +1,24 @@
+projects: []
+workflows:
+  prod:
+    plan:
+      steps:
+      - init
+      - plan
+      - run: terraform fmt -check -diff -recursive
+        shell: bash
+    apply:
+      steps:
+      - init
+      - run: terraform fmt -check -diff -recursive
+        shell: bash
+      - apply
+    workflow_configuration:
+      on_pull_request_closed:
+      - digger unlock
+      on_pull_request_pushed:
+      - digger plan
+      on_commit_to_default:
+      - digger unlock
+collect_usage_data: false
+auto_merge: false

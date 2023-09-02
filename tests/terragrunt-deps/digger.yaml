@@ -1,0 +1,42 @@
+projects:
+- name: cloudflare_account
+  dir: tests/terragrunt-deps/tf/cloudflare_account
+  workflow: prod
+  terragrunt: true
+  include_patterns:
+  - tests/terragrunt-deps/tf/terragrunt.hcl
+  - tests/terragrunt-deps/tf/cloudflare_account/**
+  depends_on: []
+- name: cloudflare_zones_example_com
+  dir: tests/terragrunt-deps/tf/cloudflare_zones/example_com
+  workflow: prod
+  terragrunt: true
+  include_patterns:
+  - tests/terragrunt-deps/tf/terragrunt.hcl
+  - tests/terragrunt-deps/tf/cloudflare_zones/_module/**
+  - tests/terragrunt-deps/tf/cloudflare_zones/example_com/**
+  depends_on:
+  - cloudflare_account
+workflows:
+  prod:
+    plan:
+      steps:
+      - init
+      - plan
+      - run: terraform fmt -check -diff -recursive
+        shell: bash
+    apply:
+      steps:
+      - init
+      - run: terraform fmt -check -diff -recursive
+        shell: bash
+      - apply
+    workflow_configuration:
+      on_pull_request_closed:
+      - digger unlock
+      on_pull_request_pushed:
+      - digger plan
+      on_commit_to_default:
+      - digger unlock
+collect_usage_data: false
+auto_merge: false
