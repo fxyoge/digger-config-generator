@@ -5,45 +5,67 @@ on:
   push:
     branches:
       - main
+    tags:
+      - v*
   pull_request:
     branches:
       - main
 
 env:
-  IMAGE_SLUG: ghcr.io/fxyoge/digger-config-generator
+  IMAGE_NAME: digger-config-generator
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     strategy:
       fail-fast: false
       matrix:
         platform:
           - linux/amd64
+
     steps:
-      - name: checkout
+      - name: Checkout
         uses: actions/checkout@v3
-      - name: docker meta
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.21"
+
+      - name: Build
+        run: go build -v ./...
+
+      - name: Test
+        run: go test -v ./...
+
+      - name: Docker meta
         id: meta
         uses: docker/metadata-action@v4
         with:
           images: |
-            ${{ env.IMAGE_SLUG }}
+            ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}
           tags: |
             type=raw,value=latest
             type=sha
-      - name: setup qemu
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+
+      - name: Setup qemu
         uses: docker/setup-qemu-action@v2
-      - name: setup docker buildx
+
+      - name: Setup docker buildx
         uses: docker/setup-buildx-action@v2
-      - name: login to ghcr
+
+      - name: Login to GHCR
         if: github.event_name != 'pull_request'
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: build and push docker
+
+      - name: Build and push docker
         uses: docker/build-push-action@v4
         with:
           context: .
@@ -51,3 +73,4 @@ jobs:
           platforms: ${{ matrix.platform }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          target: release
