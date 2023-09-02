@@ -1,12 +1,11 @@
 projects:
-- name: cloudflare_zones_example_com
-  dir: tests/terragrunt-module/tf/cloudflare_zones/example_com
+- name: fastmail_cloudflare_example_com
+  dir: tests/terragrunt-remote-module/tf/fastmail_cloudflare/example_com
   workflow: prod
   terragrunt: true
   include_patterns:
-  - tests/terragrunt-module/tf/terragrunt.hcl
-  - tests/terragrunt-module/tf/cloudflare_zones/_module/**
-  - tests/terragrunt-module/tf/cloudflare_zones/example_com/**
+  - tests/terragrunt-remote-module/tf/terragrunt.hcl
+  - tests/terragrunt-remote-module/tf/fastmail_cloudflare/example_com/**
   depends_on: []
 workflows:
   prod:

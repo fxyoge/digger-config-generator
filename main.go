@@ -2,8 +2,6 @@ package main
 
 import (
 	"bufio"
-	"errors"
-	"fmt"
 	"os"
 	"regexp"
 	"strings"
@@ -172,15 +170,12 @@ func generateDigger(w *bufio.Writer, terraformPath string) error {
 					terraformPath + "/" + dir + "/**",
 				},
 			})
-			continue
-		}
+		} else {
+			hasModule, err := pathExists(terraformPath + "/" + dir + "/_module")
+			if err != nil {
+				return err
+			}
 
-		isModuley, err := pathExists(terraformPath + "/" + dir + "/_module")
-		if err != nil {
-			return err
-		}
-
-		if isModuley {
 			subdirs, err := listDirectories(terraformPath + "/" + dir)
 			if err != nil {
 				return err
@@ -197,24 +192,23 @@ func generateDigger(w *bufio.Writer, terraformPath string) error {
 				}
 
 				project := DiggerProject{
-					Name:       dir + "_" + subdir,
-					Dir:        terraformPath + "/" + dir + "/" + subdir,
-					Workflow:   "prod",
-					Terragrunt: true,
-					IncludePatterns: []string{
-						terraformPath + "/terragrunt.hcl",
-						terraformPath + "/" + dir + "/_module/**",
-						terraformPath + "/" + dir + "/" + subdir + "/**",
-					},
-					DependsOn: deps,
+					Name:            dir + "_" + subdir,
+					Dir:             terraformPath + "/" + dir + "/" + subdir,
+					Workflow:        "prod",
+					Terragrunt:      true,
+					IncludePatterns: []string{},
+					DependsOn:       deps,
 				}
+
+				project.IncludePatterns = append(project.IncludePatterns, terraformPath+"/terragrunt.hcl")
+				if hasModule {
+					project.IncludePatterns = append(project.IncludePatterns, terraformPath+"/"+dir+"/_module/**")
+				}
+				project.IncludePatterns = append(project.IncludePatterns, terraformPath+"/"+dir+"/"+subdir+"/**")
 
 				config.Projects = append(config.Projects, project)
 			}
-			continue
 		}
-
-		return errors.New(fmt.Sprintf("Couldn't determine the project type at path %s", dir))
 	}
 
 	yamlData, err := yaml.Marshal(&config)
