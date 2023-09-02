@@ -1,3 +1,12 @@
+# [0.2.0](https://github.com/fxyoge/digger-config-generator/compare/v0.1.2...v0.2.0) (2023-09-02)
+
+
+### Features
+
+* support moduley projects without local _modules ([0a63954](https://github.com/fxyoge/digger-config-generator/commit/0a639546b22912ccd1fcb9b14cf9c40a4e395577))
+
+
+
 ## [0.1.2](https://github.com/fxyoge/digger-config-generator/compare/v0.1.0...v0.1.2) (2023-09-02)
 
 
