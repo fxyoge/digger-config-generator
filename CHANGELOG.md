@@ -1,8 +1,10 @@
-## [0.1.1](https://github.com/fxyoge/digger-config-generator/compare/v0.1.0...v0.1.1) (2023-09-02)
+## [0.1.2](https://github.com/fxyoge/digger-config-generator/compare/v0.1.0...v0.1.2) (2023-09-02)
 
 
 ### Bug Fixes
 
+* also, skip the version file ([2c0a23e](https://github.com/fxyoge/digger-config-generator/commit/2c0a23eb84262ec81d0d2eb9a6ab73d49c36dfb0))
+* ci should be good to go now ([7efd695](https://github.com/fxyoge/digger-config-generator/commit/7efd69594a9c98f2c2dbe09d416573b17fb6ff43))
 * trigger new build ([ce57255](https://github.com/fxyoge/digger-config-generator/commit/ce5725547c10c2a529821ae32e536d7475a80390))
 
 
