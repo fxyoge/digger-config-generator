@@ -222,8 +222,8 @@ func generateDigger(w *bufio.Writer, terraformPath string) error {
 }
 
 var cli struct {
-	InputPath  string `name:"input" type:"path" default:"./terraform" help:"Root path to terraform projects, e.g. './terraform'."`
-	OutputPath string `name:"output" type:"path" help:"Path to output digger config, e.g. './digger.yaml'. If not specified, output will go to stdout."`
+	InputPath  string `name:"input" default:"./terraform" help:"Root path to terraform projects, e.g. './terraform'."`
+	OutputPath string `name:"output" help:"Path to output digger config, e.g. './digger.yaml'. If not specified, output will go to stdout."`
 }
 
 func main() {
