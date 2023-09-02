@@ -1,3 +1,12 @@
+## [0.2.1](https://github.com/fxyoge/digger-config-generator/compare/v0.2.0...v0.2.1) (2023-09-02)
+
+
+### Bug Fixes
+
+* remove path parsing from args ([e8f9297](https://github.com/fxyoge/digger-config-generator/commit/e8f92972345109c39312c023065aeab703366a5e))
+
+
+
 # [0.2.0](https://github.com/fxyoge/digger-config-generator/compare/v0.1.2...v0.2.0) (2023-09-02)
 
 
