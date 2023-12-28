@@ -24,7 +24,7 @@ jobs:
 
       - name: Generate changelog
         id: changelog
-        uses: TriPSs/conventional-changelog-action@v4
+        uses: TriPSs/conventional-changelog-action@v5
         if: github.event_name != 'pull_request'
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
